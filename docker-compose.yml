@@ -1,0 +1,18 @@
+version: "3"
+services:
+    db:
+        image: postgres
+        environment: 
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+
+    django:
+        build: ./
+        command: ["./wait_for_it.sh", "db:5432", "--", "/bin/bash", "./start.sh"]
+        ports:
+            - "8000:8000"
+        depends_on: 
+            - db
+        links:
+            - db
